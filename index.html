@@ -517,8 +517,8 @@ tr:hover td{background:var(--sf2)}
       <div class="card-hdr">
         <div class="card-ttl">🪚 Registros de Aplainamento</div>
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
-          <input type="month" id="apl-filtro-mes" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
-          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
+          <input type="month" id="apl-filtro-mes" style="width:auto;font-size:.78rem;padding:.35rem .7rem">
+          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem">
             <option value="">Todos os clientes</option>
           </select>
           <button class="btn bg btn-sm" onclick="document.getElementById('apl-filtro-mes').value='';document.getElementById('apl-filtro-cli').value='';renderAplainar()">Limpar</button>
@@ -2424,6 +2424,9 @@ function iniciarApp(){
   document.getElementById('pz-juros').value=c.juros;
   document.getElementById('pz-parc').value=c.parcelas;
   document.getElementById('pz-dia').value=c.dia||10;
+  // Filtros aplainar — via JS pra não interferir com o sidebar
+  document.getElementById('apl-filtro-mes').addEventListener('change',renderAplainar);
+  document.getElementById('apl-filtro-cli').addEventListener('change',renderAplainar);
   renderCatalog();
 }
 
