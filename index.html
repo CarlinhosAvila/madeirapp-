@@ -903,15 +903,22 @@ async function carregarDados(){
       supa('GET','aplainamentos',null,`?user_id=eq.${_userId}&order=updated_at.desc`),
       supa('GET','configuracoes',null,`?user_id=eq.${_userId}`)
     ]);
-    _db.moveis=moveis.map(r=>r.data);
-    _db.insumos=insumos.map(r=>r.data);
-    _db.orcs=orcs.map(r=>r.data);
-    _db.clientes=clis.map(r=>r.data);
-    _db.apls=apls.map(r=>r.data);
+    _db.moveis=moveis.map(r=>r.data).filter(Boolean);
+    _db.insumos=insumos.map(r=>r.data).filter(Boolean);
+    _db.orcs=orcs.map(r=>r.data).filter(Boolean);
+    _db.clientes=clis.map(r=>r.data).filter(Boolean);
+    _db.apls=apls.map(r=>r.data).filter(Boolean);
     if(cfg.length){_db.config=cfg[0].config||getCfg();_db.marc=cfg[0].marcenaria||getMarc();}
     if(!_db.insumos||!_db.insumos.length)_db.insumos=defInsumos(false);
     if(!_db.moveis||!_db.moveis.length)_db.moveis=defMoveis(false);
-  } catch(e){console.error('Erro carregar:',e);}
+  } catch(e){
+    console.error('Erro carregar:',e);
+    _db.moveis=_db.moveis||[];
+    _db.insumos=_db.insumos||[];
+    _db.orcs=_db.orcs||[];
+    _db.clientes=_db.clientes||[];
+    _db.apls=_db.apls||[];
+  }
   iniciarApp();
 }
 
@@ -1074,7 +1081,7 @@ function nav(page,arg=null){
   if(page==='clientes'){renderClis();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openCliModal()">+ Novo Cliente</button>`;}
   if(page==='marcenaria')renderMarcenaria();
   if(page==='config')renderConfig();
-  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;setTimeout(()=>document.getElementById('sidebar').classList.remove('open'),50);}
+  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;}
   document.getElementById('sidebar').classList.remove('open');
   window.scrollTo(0,0);
 }
