@@ -1074,7 +1074,7 @@ function nav(page,arg=null){
   if(page==='clientes'){renderClis();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openCliModal()">+ Novo Cliente</button>`;}
   if(page==='marcenaria')renderMarcenaria();
   if(page==='config')renderConfig();
-  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;}
+  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;document.getElementById('sidebar').classList.remove('open');}
   document.getElementById('sidebar').classList.remove('open');
   window.scrollTo(0,0);
 }
