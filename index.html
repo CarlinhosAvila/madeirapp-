@@ -517,8 +517,8 @@ tr:hover td{background:var(--sf2)}
       <div class="card-hdr">
         <div class="card-ttl">🪚 Registros de Aplainamento</div>
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
-          <input type="month" id="apl-filtro-mes" style="width:auto;font-size:.78rem;padding:.35rem .7rem">
-          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem">
+          <input type="month" id="apl-filtro-mes" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
+          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
             <option value="">Todos os clientes</option>
           </select>
           <button class="btn bg btn-sm" onclick="document.getElementById('apl-filtro-mes').value='';document.getElementById('apl-filtro-cli').value='';renderAplainar()">Limpar</button>
@@ -1074,7 +1074,7 @@ function nav(page,arg=null){
   if(page==='clientes'){renderClis();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openCliModal()">+ Novo Cliente</button>`;}
   if(page==='marcenaria')renderMarcenaria();
   if(page==='config')renderConfig();
-  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;document.getElementById('sidebar').classList.remove('open');}
+  if(page==='aplainar'){renderAplainar();document.getElementById('topbar-actions').innerHTML=`<button class="btn bp btn-sm" onclick="openAplainarModal()">+ Novo Registro</button><button class="btn bor btn-sm" onclick="escolherClientePDF()">📄 Nota por Cliente</button>`;setTimeout(()=>document.getElementById('sidebar').classList.remove('open'),50);}
   document.getElementById('sidebar').classList.remove('open');
   window.scrollTo(0,0);
 }
@@ -1957,7 +1957,11 @@ function renderAplainar(){
   const cliDrop=document.getElementById('apl-filtro-cli');
   if(cliDrop){
     const cur=cliDrop.value||cliSel;
-    cliDrop.innerHTML=`<option value="">Todos os clientes</option>`+clientes.map(c=>`<option value="${c}" ${c===cur?'selected':''}>${c}</option>`).join('');
+    const novasOpcoes=`<option value="">Todos os clientes</option>`+clientes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    if(cliDrop.innerHTML!==novasOpcoes){
+      cliDrop.innerHTML=novasOpcoes;
+      cliDrop.value=cur;
+    }
   }
 
   let filtrados=apls;
@@ -2424,9 +2428,6 @@ function iniciarApp(){
   document.getElementById('pz-juros').value=c.juros;
   document.getElementById('pz-parc').value=c.parcelas;
   document.getElementById('pz-dia').value=c.dia||10;
-  // Filtros aplainar — via JS pra não interferir com o sidebar
-  document.getElementById('apl-filtro-mes').addEventListener('change',renderAplainar);
-  document.getElementById('apl-filtro-cli').addEventListener('change',renderAplainar);
   renderCatalog();
 }
 
