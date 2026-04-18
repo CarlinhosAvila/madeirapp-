@@ -518,7 +518,7 @@ tr:hover td{background:var(--sf2)}
         <div class="card-ttl">🪚 Registros de Aplainamento</div>
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
           <input type="month" id="apl-filtro-mes" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
-          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem" onchange="renderAplainar()">
+          <select id="apl-filtro-cli" style="width:auto;font-size:.78rem;padding:.35rem .7rem">
             <option value="">Todos os clientes</option>
           </select>
           <button class="btn bg btn-sm" onclick="document.getElementById('apl-filtro-mes').value='';document.getElementById('apl-filtro-cli').value='';renderAplainar()">Limpar</button>
@@ -1959,8 +1959,10 @@ function renderAplainar(){
     const cur=cliDrop.value||cliSel;
     const novasOpcoes=`<option value="">Todos os clientes</option>`+clientes.map(c=>`<option value="${c}">${c}</option>`).join('');
     if(cliDrop.innerHTML!==novasOpcoes){
+      cliDrop.onchange=null;
       cliDrop.innerHTML=novasOpcoes;
       cliDrop.value=cur;
+      cliDrop.onchange=renderAplainar;
     }
   }
 
